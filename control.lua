@@ -84,7 +84,7 @@ function export_metrics()
                 gauge_bots_total:set(count,{net_id, bot_type})
 	      end
 	   end
-	   game.write_file("prometheus.prom", prometheus.collect())
+	   game.write_file("prometheus_logistic_export/prometheus.prom", prometheus.collect())
 end
 
 script.on_event(defines.events.on_tick, function(event)
