@@ -1,0 +1,10 @@
+{
+    "name": "prometheus_logistic_export",
+    "version": "0.0.1",
+    "factorio_version": "0.16",
+    "title": "prometheus_logistic_export",
+    "author": "blendi_93",
+    "description": "Export Logisitc stats to file ready for prometheus file exporter",
+    "homepage": "https://github.com/blendi_93",
+    "dependencies": ["base >= 0.15.0"]
+}
