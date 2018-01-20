@@ -1,0 +1,54 @@
+{{ template "head" . }}
+
+{{ template "prom_content_head" . }}
+<h1>Bots avaible</h1>
+
+Network: 
+<select id="network" onchange="update_graph()">
+<option value="">ALL</option>
+
+{{ range query "bots_available{job='factorio', bot='logistic'}" | sortByLabel "network" }}
+
+  <option value=", network='{{ .Labels.network }}'">{{ .Labels.network }}</option>
+
+{{ else }}
+<tr><td colspan=4>No Networks found</td></tr>
+{{ end }}
+</select>
+Bot:
+<select id="bot_type" onchange="update_graph()">
+<option value="logistic">logistic</option>
+<option value="construction">construction</option>
+</select>
+
+
+<div id="bot_graphs"></div>
+<script>
+function update_graph(){
+	document.querySelector("#bot_graphs").innerHTML = "";
+	var bot=document.getElementById("bot_type").value;
+	var network=document.getElementById("network").value;
+	var expr = "sum(bots_available{job='factorio', bot='" + bot + "' " + network + "})"
+	var y_title = "";
+	console.log(network);
+	if (network) {
+		y_title="Bots: net-" + network;
+	} else {
+		y_title="Bots: net-ALL";
+		
+	}
+new PromConsole.Graph({
+  node: document.querySelector("#bot_graphs"),
+  expr: expr,
+  name: bot,
+  yAxisFormatter: PromConsole.NumberFormatter.humanizeNoSmallPrefix,
+  yHoverFormatter: PromConsole.NumberFormatter.humanizeNoSmallPrefix,
+  yTitle: y_title
+})
+}
+update_graph()
+</script>
+
+{{ template "prom_content_tail" . }}
+
+{{ template "tail" }}
